@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "verification_tokens")
+@Table(name = "verification_tokens")	// メール認証用
 @Data
 public class VerificationToken {
 	@Id

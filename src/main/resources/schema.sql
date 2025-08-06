@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS users (
    FOREIGN KEY (role_id) REFERENCES roles (id)
 );
 
-/*======== メール認証用テーブル ========*/
+/*======== メール認証用 テーブル ========*/
 CREATE TABLE IF NOT EXISTS verification_tokens (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL UNIQUE,
