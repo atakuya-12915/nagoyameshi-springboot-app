@@ -16,7 +16,7 @@ import com.example.nagoyameshi.form.SignupForm;
 import com.example.nagoyameshi.repository.RoleRepository;
 import com.example.nagoyameshi.repository.UserRepository;
 
-@Service		// メール認証機能
+@Service
 public class UserService {
 
 	private final UserRepository userRepository;

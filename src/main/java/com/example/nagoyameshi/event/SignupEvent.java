@@ -6,7 +6,7 @@ import com.example.nagoyameshi.entity.User;
 
 import lombok.Getter;
 
-@Getter		// メール認証用
+@Getter
 public class SignupEvent extends ApplicationEvent {
 	private User user;
 	private String requestUrl;

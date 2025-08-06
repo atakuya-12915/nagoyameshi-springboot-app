@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.example.nagoyameshi.entity.User;
 import com.example.nagoyameshi.service.VerificationTokenService;
 
-@Component		// メール認証用
+@Component
 public class SignupEventListener {
 	private final VerificationTokenService verificationTokenService;
 	private final JavaMailSender javaMailSender;

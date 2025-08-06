@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.nagoyameshi.entity.User;
 
-@Component		// メール認証用
+@Component
 public class SignupEventPublisher {
 	private final ApplicationEventPublisher applicationEventPublisher;
 

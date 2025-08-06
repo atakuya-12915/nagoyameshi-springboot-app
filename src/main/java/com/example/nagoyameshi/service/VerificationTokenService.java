@@ -7,7 +7,7 @@ import com.example.nagoyameshi.entity.User;
 import com.example.nagoyameshi.entity.VerificationToken;
 import com.example.nagoyameshi.repository.VerificationTokenRepository;
 
-@Service		// メール認証用
+@Service
 public class VerificationTokenService {
 	private final VerificationTokenRepository verificationTokenRepository;
 
