@@ -2,7 +2,10 @@ package com.example.nagoyameshi.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +56,7 @@ public class UserService {
 		user.setEmail(signupForm.getEmail());
 		user.setPassword(passwordEncoder.encode(signupForm.getPassword()));
 		user.setRole(role);
-		user.setEnabled(true);
+		user.setEnabled(false);
 		
 		return userRepository.save(user);
 	}
@@ -67,5 +70,27 @@ public class UserService {
 	// パスワードとパスワード（確認用）の入力値が一致するかどうかをチェックする
 	public boolean isSamePassword(String password, String passwordConfirmation) {
 		return password.equals(passwordConfirmation);
+	}
+	
+	// ユーザーを有効にする
+	@Transactional
+	public void enableUser(User user) {
+		user.setEnabled(true);
+		userRepository.save(user);
+	}
+	
+	// すべてのユーザーをページングされた状態で取得する
+	public Page<User> findAllUsers(Pageable pageable){
+		return userRepository.findAll(pageable);
+	}
+	
+	// 指定されたキーワードを氏名またはフリガナに含むユーザーを、ページングされた状態で取得する
+	public Page<User> findUsersByNameLikeOrFuriganaLike(String nameKeyword, String furiganaKeyword, Pageable pageable){
+		return userRepository.findByNameLikeOrFuriganaLike("%" + nameKeyword + "%", "%" + furiganaKeyword + "%", pageable);
+	}
+	
+	// 指定したidを持つユーザーを取得する
+	public Optional<User> findUserById(Integer id) {
+		return userRepository.findById(id);
 	}
 }

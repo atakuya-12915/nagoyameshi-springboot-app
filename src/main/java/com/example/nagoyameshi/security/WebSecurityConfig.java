@@ -18,8 +18,9 @@ public class WebSecurityConfig {
 		http
 				.authorizeHttpRequests((requests) -> requests
 						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/", "/signup/**")
-						.permitAll() 							// すべてのユーザーにアクセスを許可するURL
-						.anyRequest().authenticated() 			// 上記以外のURLはログインが必要（どのロールでもOK）
+						.permitAll() 									// すべてのユーザーにアクセスを許可するURL
+						.requestMatchers("/admin/**").hasRole("ADMIN")  // 管理者にのみアクセスを許可するURL
+						.anyRequest().authenticated() 					// 上記以外のURLはログインが必要（どのロールでもOK）
 				)
 				.formLogin((form) -> form
 						.loginPage("/login") 					// ログインページのURL
