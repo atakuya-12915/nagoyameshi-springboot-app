@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.nagoyameshi.entity.Role;
 import com.example.nagoyameshi.entity.User;
 import com.example.nagoyameshi.form.SignupForm;
+import com.example.nagoyameshi.form.UserEditForm;
 import com.example.nagoyameshi.repository.RoleRepository;
 import com.example.nagoyameshi.repository.UserRepository;
 
@@ -61,6 +62,31 @@ public class UserService {
 		return userRepository.save(user);
 	}
 	
+	@Transactional
+    public void updateUser(UserEditForm userEditForm, User user) {
+        user.setName(userEditForm.getName());
+        user.setFurigana(userEditForm.getFurigana());
+        user.setPostalCode(userEditForm.getPostalCode());
+        user.setAddress(userEditForm.getAddress());
+        user.setPhoneNumber(userEditForm.getPhoneNumber());
+
+        if (!userEditForm.getBirthday().isEmpty()) {
+            user.setBirthday(LocalDate.parse(userEditForm.getBirthday(), DateTimeFormatter.ofPattern("yyyyMMdd")));
+        } else {
+            user.setBirthday(null);
+        }
+
+        if (!userEditForm.getOccupation().isEmpty()) {
+            user.setOccupation(userEditForm.getOccupation());
+        } else {
+            user.setOccupation(null);
+        }
+
+        user.setEmail(userEditForm.getEmail());
+
+        userRepository.save(user);
+    }
+	
 	// メールアドレスが登録済みかどうかをチェックする
 	public boolean isEmailRegistered(String email) {
 		User user = userRepository.findByEmail(email);
@@ -78,6 +104,16 @@ public class UserService {
 		user.setEnabled(true);
 		userRepository.save(user);
 	}
+	
+	 // メールアドレスが変更されたかどうかをチェックする
+    public boolean isEmailChanged(UserEditForm userEditForm, User user) {
+        return !userEditForm.getEmail().equals(user.getEmail());
+    }
+
+    // 指定したメールアドレスを持つユーザーを取得する
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    } 
 	
 	// すべてのユーザーをページングされた状態で取得する
 	public Page<User> findAllUsers(Pageable pageable){
