@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,9 +23,11 @@ import com.example.nagoyameshi.repository.RestaurantRepository;
 @Service
 public class RestaurantService {
    private final RestaurantRepository restaurantRepository;
+   private final CategoryRestaurantService categoryRestaurantService;
 
-   public RestaurantService(RestaurantRepository restaurantRepository) {
+   public RestaurantService(RestaurantRepository restaurantRepository, CategoryRestaurantService categoryRestaurantService) {
        this.restaurantRepository = restaurantRepository;
+       this.categoryRestaurantService = categoryRestaurantService;
    }
 
    // すべての店舗をページングされた状態で取得する
@@ -56,6 +59,7 @@ public class RestaurantService {
    public void createRestaurant(RestaurantRegisterForm restaurantRegisterForm) {
        Restaurant restaurant = new Restaurant();
        MultipartFile imageFile = restaurantRegisterForm.getImageFile();
+       List<Integer> categoryIds = restaurantRegisterForm.getCategoryIds();
 
        if (!imageFile.isEmpty()) {
            String imageName = imageFile.getOriginalFilename();
@@ -76,12 +80,17 @@ public class RestaurantService {
        restaurant.setSeatingCapacity(restaurantRegisterForm.getSeatingCapacity());
 
        restaurantRepository.save(restaurant);
+       
+       if (categoryIds != null) {
+           categoryRestaurantService.createCategoriesRestaurants(categoryIds, restaurant);
+       }    
    }
 
    @Transactional
    public void updateRestaurant(RestaurantEditForm restaurantEditForm, Restaurant restaurant) {
        MultipartFile imageFile = restaurantEditForm.getImageFile();
-
+       List<Integer> categoryIds = restaurantEditForm.getCategoryIds();
+    		   
        if (!imageFile.isEmpty()) {
            String imageName = imageFile.getOriginalFilename();
            String hashedImageName = generateNewFileName(imageName);
@@ -101,6 +110,8 @@ public class RestaurantService {
        restaurant.setSeatingCapacity(restaurantEditForm.getSeatingCapacity());
 
        restaurantRepository.save(restaurant);
+       
+       categoryRestaurantService.syncCategoriesRestaurants(categoryIds, restaurant);
    }
 
    @Transactional

@@ -1,5 +1,6 @@
 package com.example.nagoyameshi.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -44,6 +45,11 @@ public class CategoryService {
 	public Category findFirstCategoryByOrderByIdDesc() {
 		return categoryRepository.findFirstByOrderByIdDesc();
 	}
+	
+	// すべてのカテゴリをリスト形式で取得する
+    public List<Category> findAllCategories() {
+        return categoryRepository.findAll();
+    }
 
 	@Transactional
 	public void createCategory(CategoryRegisterForm categoryRegisterForm) {
