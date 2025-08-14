@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.nagoyameshi.entity.Category;
 import com.example.nagoyameshi.entity.Restaurant;
+import com.example.nagoyameshi.security.UserDetailsImpl;
 import com.example.nagoyameshi.service.CategoryService;
 import com.example.nagoyameshi.service.RestaurantService;
 
@@ -24,10 +26,13 @@ public class HomeController {
 	}
 
 	@GetMapping("/")
-	public String index(Model model) {
+	public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
+		if (userDetailsImpl != null && userDetailsImpl.getUser().getRole().getName().equals("ROLE_ADMIN")) {
+            return "redirect:/admin";
+        }
+		
 		Page<Restaurant> highlyRatedRestaurants = restaurantService.findAllRestaurantsByOrderByAverageScoreDesc(PageRequest.of(0, 6));
-		Page<Restaurant> newRestaurants = restaurantService
-				.findAllRestaurantsByOrderByCreatedAtDesc(PageRequest.of(0, 6));
+		Page<Restaurant> newRestaurants = restaurantService.findAllRestaurantsByOrderByCreatedAtDesc(PageRequest.of(0, 6));
 		Category washoku = categoryService.findFirstCategoryByName("和食");
 		Category udon = categoryService.findFirstCategoryByName("うどん");
 		Category don = categoryService.findFirstCategoryByName("丼物");
