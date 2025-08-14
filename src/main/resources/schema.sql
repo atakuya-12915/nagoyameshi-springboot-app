@@ -108,3 +108,17 @@ CREATE TABLE IF NOT EXISTS terms (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+/*======== レビュー用 テーブル ========*/
+CREATE TABLE IF NOT EXISTS reviews (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    content TEXT NOT NULL,
+    score INT NOT NULL,
+    restaurant_id INT NOT NULL,
+    user_id INT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE (restaurant_id, user_id),
+    FOREIGN KEY (restaurant_id) REFERENCES restaurants (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
