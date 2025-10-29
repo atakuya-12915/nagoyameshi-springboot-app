@@ -3,20 +3,20 @@
 ## 📸 スクリーンショット
 
 **トップ画面**
-
+![alt text](nagoyameshi-top.png)
 **検索画面**
-
+![alt text](nagoyameshi-serch.png)
 **店舗予約画面**
-
+![alt text](nagoyameshi-reservation.png)
 **レビュー投稿画面**
-
+![alt text](nagoyameshi-rev.png)
 ---
 
 ## 📝 概要
 
 名古屋の飲食店検索・予約・レビュー投稿ができる**食べログ風アプリ**です。  
 ユーザーは店舗を検索し、予約やレビュー投稿を通して利用体験を共有できます。
-
+- 要件定義書：https://docs.google.com/document/d/1-1AZROOu5Fywvb3cdvymPQ8GlOKGWRHFyP_QCLTCcrc/edit?usp=sharing
 ---
 
 ## 🎯 制作背景
@@ -189,27 +189,10 @@ nagoyameshi-springboot-app/
 
 ## 🔍 データベース設計
 
-### 主要テーブル
-#### restaurants（店舗）
-| カラム         | 型       | 説明   |
-| ----------- | ------- | ---- |
-| id          | INT     | 主キー  |
-| name        | VARCHAR | 店名   |
-| category_id | INT     | カテゴリ |
-| company_id  | INT     | 企業ID |
-| description | TEXT    | 説明   |
-| image_path  | VARCHAR | 画像パス |
-| rating      | DECIMAL | 平均評価 |
+### ER図
+![alt text](image.png)
 
-#### reservations（予約）
-| カラム           | 型        | 説明     |
-| ------------- | -------- | ------ |
-| id            | INT      | 主キー    |
-| user_id       | INT      | ユーザーID |
-| restaurant_id | INT      | 店舗ID   |
-| reserved_at   | DATETIME | 予約日時   |
-| num_people    | INT      | 人数     |
-
+---
 
 ## 📌 今後の実装予定
 - [ ] レビューへの返信機能（施設側）
